@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Committee – SPM Class of 2006</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero" style="padding:28px 20px"><h1 style="font-size:1.6rem;margin:0">Committee view</h1><p style="margin:.4em auto 0;font-size:1rem">SPM Class of 2006 Reunion &middot; responses are private</p></header>
+<div class="admin">
+  <section class="card" id="login" style="max-width:26rem;margin:20px auto">
+    <h2>Committee passcode</h2>
+    <p class="sub">Enter the passcode to view responses.</p>
+    <form id="lf" onsubmit="return false">
+      <input id="pass" type="password" autocomplete="current-password" placeholder="Passcode" required>
+      <div class="msg err" id="lerr" hidden></div>
+      <button id="lbtn" type="submit" style="margin-top:14px;width:100%">View responses</button>
+    </form>
+  </section>
+  <section id="dash" hidden>
+    <div class="counts" id="counts"></div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Search name, email, note…">
+      <select id="flt" style="max-width:10rem"><option value="">All responses</option><option value="yes">Yes</option><option value="maybe">Maybe</option><option value="no">No</option></select>
+      <button class="secondary" id="csv">Download CSV</button>
+      <button class="secondary" id="refresh">Refresh</button>
+      <button class="secondary" id="logout">Lock</button>
+    </div>
+    <div class="tablewrap"><table><thead><tr>
+      <th>Received</th><th>Name</th><th>Maiden</th><th>Email</th><th>Phone</th><th>RSVP</th><th>Guests</th><th>Address</th><th>Note</th><th></th>
+    </tr></thead><tbody id="rows"></tbody></table></div>
+    <p class="sub" id="empty" hidden style="padding:16px">No responses yet.</p>
+  </section>
+</div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)}, rpc=window.reunionRpc, data=[], KEY="spm06_pass";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function fmt(d){return new Date(d).toLocaleString([], {year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})}
+  function load(pass,quiet){
+    $("lbtn").disabled=true;
+    return rpc("reunion_admin_list",{p_passcode:pass}).then(function(r){
+      data=r||[]; sessionStorage.setItem(KEY,pass); $("login").hidden=true; $("dash").hidden=false; render();
+    }).catch(function(e){
+      sessionStorage.removeItem(KEY); $("login").hidden=false; $("dash").hidden=true;
+      if(!quiet){var el=$("lerr"); el.textContent=(e.code==="28000"||e.status===400)?"That passcode isn't right.":"Couldn't load responses: "+e.message; el.hidden=false;}
+    }).then(function(){$("lbtn").disabled=false});
+  }
+  function render(){
+    var c={yes:0,maybe:0,no:0,head:0,maybeHead:0};
+    data.forEach(function(r){c[r.attending]++; if(r.attending==="yes")c.head+=1+r.guests; if(r.attending==="maybe")c.maybeHead+=1+r.guests;});
+    $("counts").innerHTML=[["Yes",c.yes],["Maybe",c.maybe],["No",c.no],["Confirmed headcount",c.head],["Headcount if all maybes come",c.head+c.maybeHead]]
+      .map(function(x){return '<div class="stat"><b>'+x[1]+'</b><small>'+x[0]+'</small></div>'}).join("");
+    var q=$("q").value.toLowerCase(), f=$("flt").value;
+    var rows=data.filter(function(r){return (!f||r.attending===f)&&(!q||JSON.stringify(r).toLowerCase().indexOf(q)>-1)});
+    $("rows").innerHTML=rows.map(function(r){return "<tr><td>"+esc(fmt(r.created_at))+"</td><td>"+esc(r.full_name)+"</td><td>"+esc(r.maiden_name)+"</td><td><a href='mailto:"+esc(r.email)+"'>"+esc(r.email)+"</a></td><td>"+esc(r.phone)+"</td><td><span class='pill "+r.attending+"'>"+r.attending+"</span></td><td>"+r.guests+"</td><td class='note'>"+esc(r.address)+"</td><td class='note'>"+esc(r.note)+"</td><td><button class='danger' data-id='"+esc(r.id)+"'>Delete</button></td></tr>"}).join("");
+    $("empty").hidden=data.length>0;
+  }
+  function csvCell(v){v=v==null?"":String(v); if(/^[=+\-@\t\r]/.test(v))v="'"+v; return '"'+v.replace(/"/g,'""')+'"'}
+  $("csv").onclick=function(){
+    var h=["received","full_name","maiden_name","email","phone","attending","guests","address","note"];
+    var lines=[h.join(",")].concat(data.map(function(r){return [r.created_at,r.full_name,r.maiden_name,r.email,r.phone,r.attending,r.guests,r.address,r.note].map(csvCell).join(",")}));
+    var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv"}));
+    a.download="spm-2006-responses-"+new Date().toISOString().slice(0,10)+".csv"; document.body.appendChild(a); a.click(); a.remove();
+  };
+  $("lf").onsubmit=function(e){e.preventDefault(); $("lerr").hidden=true; load($("pass").value.trim());};
+  $("refresh").onclick=function(){load(sessionStorage.getItem(KEY),true)};
+  $("logout").onclick=function(){sessionStorage.removeItem(KEY); data=[]; $("pass").value=""; $("dash").hidden=true; $("login").hidden=false};
+  $("q").oninput=render; $("flt").onchange=render;
+  $("rows").onclick=function(e){var b=e.target.closest("button[data-id]"); if(!b)return;
+    if(!confirm("Delete this response permanently?"))return;
+    rpc("reunion_admin_delete",{p_passcode:sessionStorage.getItem(KEY),p_id:b.getAttribute("data-id")}).then(function(){return load(sessionStorage.getItem(KEY),true)}).catch(function(e){alert("Delete failed: "+e.message)});};
+  var saved=sessionStorage.getItem(KEY); if(saved) load(saved,true);
+})();
+</script>
+</body>
+</html>
