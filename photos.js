@@ -83,7 +83,7 @@
     (function next() {
       if (!queue.length) {
         btn.disabled = false; prog.hidden = true;
-        if (done) { $("photo-ok").hidden = false; $("photo-ok").textContent = "Thank you! " + done + " photo" + (done > 1 ? "s" : "") + " received. They'll appear in the gallery after the committee approves them."; picked = fails.map(function (f) { return f.file; }); renderPicked(); form.p_caption.value = ""; }
+        if (done) { $("photo-ok").hidden = false; $("photo-ok").textContent = "Thank you! " + done + " photo" + (done > 1 ? "s" : "") + " received. They'll appear in the gallery after an admin approves them."; picked = fails.map(function (f) { return f.file; }); renderPicked(); form.p_caption.value = ""; }
         if (fails.length) { err.textContent = "Couldn't send: " + fails.map(function (f) { return f.file.name + " (" + f.msg + ")"; }).join("; ") + ". Try JPG or PNG if it's a HEIC from a non-Apple device."; err.hidden = false; }
         return;
       }
