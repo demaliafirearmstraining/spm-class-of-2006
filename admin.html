@@ -33,6 +33,14 @@
       <th>Received</th><th>Name</th><th>Maiden</th><th>Email</th><th>Phone</th><th>RSVP</th><th>Guests</th><th>Address</th><th>Note</th><th></th>
     </tr></thead><tbody id="rows"></tbody></table></div>
     <p class="sub" id="empty" hidden style="padding:16px">No responses yet.</p>
+    <h2 style="margin:34px 0 4px">Photo moderation</h2>
+    <p class="sub" id="ph-sum" style="margin-bottom:10px"></p>
+    <h3 class="ph-h">Pending approval</h3>
+    <div class="pgrid" id="ph-pending"></div>
+    <p class="sub" id="ph-pending-empty" hidden>Nothing waiting.</p>
+    <h3 class="ph-h">Approved (public)</h3>
+    <div class="pgrid" id="ph-approved"></div>
+    <p class="sub" id="ph-approved-empty" hidden>No approved photos yet.</p>
   </section>
 </div>
 <script src="config.js"></script>
@@ -45,7 +53,7 @@
   function load(pass,quiet){
     $("lbtn").disabled=true;
     return rpc("reunion_admin_list",{p_passcode:pass}).then(function(r){
-      data=r||[]; sessionStorage.setItem(KEY,pass); $("login").hidden=true; $("dash").hidden=false; render();
+      data=r||[]; sessionStorage.setItem(KEY,pass); $("login").hidden=true; $("dash").hidden=false; render(); if(window.loadPhotos)window.loadPhotos();
     }).catch(function(e){
       sessionStorage.removeItem(KEY); $("login").hidden=false; $("dash").hidden=true;
       if(!quiet){var el=$("lerr"); el.textContent=(e.code==="28000"||e.status===400)?"That passcode isn't right.":"Couldn't load responses: "+e.message; el.hidden=false;}
@@ -75,6 +83,18 @@
   $("rows").onclick=function(e){var b=e.target.closest("button[data-id]"); if(!b)return;
     if(!confirm("Delete this response permanently?"))return;
     rpc("reunion_admin_delete",{p_passcode:sessionStorage.getItem(KEY),p_id:b.getAttribute("data-id")}).then(function(){return load(sessionStorage.getItem(KEY),true)}).catch(function(e){alert("Delete failed: "+e.message)});};
+
+  /* ---- photo moderation (server-side passcode check in edge function) ---- */
+  var FN=window.REUNION.supabaseUrl+"/functions/v1/reunion-photos-admin";
+  function call(action,id){return fetch(FN,{method:"POST",headers:{"Content-Type":"application/json",apikey:window.REUNION.supabaseKey},body:JSON.stringify({passcode:sessionStorage.getItem(KEY),action:action,id:id})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"failed");return j})})}
+  function card(p,pending){return '<figure class="pc"><a href="'+esc(p.url)+'" target="_blank" rel="noopener"><img loading="lazy" src="'+esc(p.thumb)+'" alt=""></a><figcaption><b>'+esc(p.uploader_name)+'</b>'+(p.event_year?' &middot; '+esc(p.event_year):'')+'<br>'+esc(p.caption||"")+'<small>'+esc(fmt(p.created_at))+'</small><div class="pb">'+(pending?'<button data-a="approve" data-id="'+esc(p.id)+'">Approve</button>':'')+'<button class="danger" data-a="delete" data-id="'+esc(p.id)+'">Delete</button></div></figcaption></figure>'}
+  window.loadPhotos=function(){call("list").then(function(r){var pe=r.photos.filter(function(p){return !p.approved}),ap=r.photos.filter(function(p){return p.approved});
+    $("ph-pending").innerHTML=pe.map(function(p){return card(p,true)}).join(""); $("ph-approved").innerHTML=ap.map(function(p){return card(p,false)}).join("");
+    $("ph-pending-empty").hidden=pe.length>0; $("ph-approved-empty").hidden=ap.length>0; $("ph-sum").textContent=pe.length+" pending \u00b7 "+ap.length+" approved";
+  }).catch(function(e){$("ph-sum").textContent="Couldn't load photos: "+e.message})};
+  $("dash").addEventListener("click",function(e){var b=e.target.closest("button[data-a]"); if(!b)return; var a=b.getAttribute("data-a");
+    if(a==="delete"&&!confirm("Delete this photo permanently?"))return; b.disabled=true;
+    call(a,b.getAttribute("data-id")).then(window.loadPhotos).catch(function(x){alert("Failed: "+x.message);b.disabled=false})});
   var saved=sessionStorage.getItem(KEY); if(saved) load(saved,true);
 })();
 </script>

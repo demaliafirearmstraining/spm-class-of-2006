@@ -56,7 +56,7 @@
 
 
   // ---- hero date + countdown ----
-  if (C.dateISO) {
+  if (C.dateISO && $("hero-date")) {
     set("hero-date", C.date + (C.time ? " \u00b7 " + C.time : ""));
     $("hero-date").classList.remove("tbd");
     var target = new Date(C.dateISO + "T" + (C.startTime || "00:00") + ":00");
