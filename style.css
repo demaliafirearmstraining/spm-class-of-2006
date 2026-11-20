@@ -62,3 +62,6 @@ th{background:var(--purple-l);color:var(--purple-d);white-space:nowrap}
 td.note{min-width:14rem;max-width:26rem;white-space:pre-wrap}
 .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-weight:700;font-size:.78rem;color:#fff}
 .pill.yes{background:var(--ok)}.pill.maybe{background:var(--warn)}.pill.no{background:var(--bad)}
+
+a.btn.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple);padding:10px 16px;font-size:.9rem;margin-bottom:6px}
+a.btn.secondary:hover{background:var(--purple-l)}

@@ -25,6 +25,35 @@
   fact("f-venue", C.venue, "Venue coming soon");
   if (C.contact && $("contact")) set("contact", C.contact);
 
+
+  // ---- Add to calendar (needs C.dateISO) ----
+  if (C.dateISO && $("cal")) {
+    var d0 = C.dateISO.replace(/-/g, "");
+    var allDay = !C.startTime;
+    function addDay(iso) { var d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10).replace(/-/g, ""); }
+    var tt = function (t) { return t.replace(":", "") + "00"; };
+    var startV, endV;
+    if (allDay) { startV = d0; endV = addDay(C.dateISO); }
+    else { startV = d0 + "T" + tt(C.startTime); endV = d0 + "T" + tt(C.endTime || C.startTime); }
+    var title = C.school + " " + C.title;
+    var notes = "Class of " + C.classYear + " reunion." + (C.time ? " Time: " + C.time + "." : " Time TBA.") + (C.venue ? "" : " Venue TBA.") + " RSVP and updates: " + location.origin + location.pathname.replace(/[^\/]*$/, "");
+    var where = C.venue || "";
+    var g = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) +
+      "&dates=" + startV + "/" + endV + "&details=" + encodeURIComponent(notes) + (where ? "&location=" + encodeURIComponent(where) : "") +
+      (allDay ? "" : "&ctz=America/New_York");
+    $("cal-google").href = g;
+    var esc = function (t) { return String(t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n"); };
+    var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//SPM Class of 2006//Reunion//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
+      "UID:spm-class-of-2006-" + d0 + "@spm-class-of-2006", "DTSTAMP:" + new Date().toISOString().replace(/[-:]|\.\d{3}/g, ""),
+      allDay ? "DTSTART;VALUE=DATE:" + startV : "DTSTART;TZID=America/New_York:" + startV,
+      allDay ? "DTEND;VALUE=DATE:" + endV : "DTEND;TZID=America/New_York:" + endV,
+      "SUMMARY:" + esc(title), "DESCRIPTION:" + esc(notes)].concat(where ? ["LOCATION:" + esc(where)] : []).concat(["END:VEVENT", "END:VCALENDAR"]).join("\r\n");
+    var icsA = $("cal-ics");
+    icsA.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+    icsA.download = "spm-class-of-2006-reunion.ics";
+    $("cal").hidden = false;
+  }
+
   var form = $("rsvp");
   if (!form) return;
   var guestsWrap = $("guests-wrap");
