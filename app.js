@@ -19,7 +19,7 @@
 
   if ($("rsvp")) document.title = C.title + " \u2013 " + C.school;
   set("school", C.school); set("loc", C.location); set("title", C.title); set("tagline", C.tagline);
-  set("year", "\u2605 " + C.classYear + " \u2605");
+  set("year", "20-Year Reunion");
   function fact(id, val, ph) { var el = $(id); if (!el) return; var s = el.querySelector("span"); if (val) { s.textContent = val; el.classList.remove("tbd"); } else { s.textContent = ph; el.classList.add("tbd"); } }
   fact("f-date", C.date + (C.date && C.time ? " \u00b7 " + C.time : ""), "Date coming soon");
   fact("f-venue", C.venue, "Venue coming soon");
@@ -52,6 +52,25 @@
     icsA.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
     icsA.download = "spm-class-of-2006-reunion.ics";
     $("cal").hidden = false;
+  }
+
+
+  // ---- hero date + countdown ----
+  if (C.dateISO) {
+    set("hero-date", C.date + (C.time ? " \u00b7 " + C.time : ""));
+    $("hero-date").classList.remove("tbd");
+    var target = new Date(C.dateISO + "T" + (C.startTime || "00:00") + ":00");
+    var pad = function (n) { return String(n); };
+    function tick() {
+      var ms = target - new Date();
+      if (ms <= 0) { $("countdown").hidden = true; set("cd-note", C.title + " is here!"); $("cd-note").hidden = false; return; }
+      var s = Math.floor(ms / 1000);
+      set("cd-d", pad(Math.floor(s / 86400))); set("cd-h", pad(Math.floor(s % 86400 / 3600)));
+      set("cd-m", pad(Math.floor(s % 3600 / 60))); set("cd-s", pad(s % 60));
+      $("countdown").hidden = false;
+    }
+    tick(); setInterval(tick, 1000);
+    if (target > new Date()) { set("cd-note", "until we\u2019re together again"); $("cd-note").hidden = false; }
   }
 
   var form = $("rsvp");

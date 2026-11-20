@@ -6,76 +6,145 @@
 <title>Class of 2006 Reunion</title>
 <meta name="description" content="Saint Peter-Marian Central Catholic High School, Class of 2006 – 20-year reunion. Save the date and RSVP.">
 <meta property="og:title" content="SPM Class of 2006 – 20-Year Reunion">
-<meta property="og:description" content="Save the date and let us know if you're coming.">
+<meta property="og:description" content="Saturday, January 30, 2027. Save the date and let us know you're coming.">
+<meta property="og:image" content="img/hero-sm.webp">
+<meta name="theme-color" content="#2E1A63">
+<link rel="icon" href="img/guardians.webp" type="image/webp">
+<link rel="preload" href="fonts/PlayfairDisplay-48d1e9.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="hero">
-  <div class="eyebrow" id="loc">Worcester, Massachusetts</div>
-  <h1 id="school">Saint Peter-Marian Central Catholic High School</h1>
-  <div class="year" id="year">&#9733; 2006 &#9733;</div>
-  <h1 id="title" style="font-size:clamp(1.4rem,4.5vw,2rem);margin-top:.5em">Class of 2006 Reunion</h1>
-  <p id="tagline"></p>
+  <div class="hero-in">
+    <div class="crest"><img src="img/guardians.webp" alt="Saint Peter-Marian Guardians shield" width="112" height="112"></div>
+    <div class="eyebrow" id="loc">Worcester, Massachusetts</div>
+    <h1 id="title">Class of 2006 Reunion</h1>
+    <p class="school" id="school">Saint Peter-Marian Central Catholic High School</p>
+    <div class="year" id="year">20 Years</div>
+    <p class="tagline" id="tagline"></p>
+    <div class="hero-date tbd" id="hero-date">Date coming soon</div>
+    <div class="countdown" id="countdown" hidden>
+      <div class="cd"><b id="cd-d">0</b><small>Days</small></div>
+      <div class="cd"><b id="cd-h">0</b><small>Hours</small></div>
+      <div class="cd"><b id="cd-m">0</b><small>Min</small></div>
+      <div class="cd"><b id="cd-s">0</b><small>Sec</small></div>
+    </div>
+    <p class="cd-note" id="cd-note" hidden></p>
+    <div class="cta">
+      <a class="btn light" href="#rsvp-card">RSVP now</a>
+      <a class="btn ghost" href="#save">Save the date</a>
+    </div>
+  </div>
 </header>
 
-<main class="wrap">
-  <section class="card save">
-    <span class="badge">Save the date</span>
-    <div class="facts">
-      <div class="fact tbd" id="f-date"><small>When</small><span>Date coming soon</span></div>
-      <div class="fact tbd" id="f-venue"><small>Where</small><span>Venue coming soon</span></div>
+<main>
+  <section class="save" id="save">
+    <div class="wrap narrow center">
+      <div class="kicker">Save the date</div>
+      <h2>Mark your calendar</h2>
+      <div class="divider"></div>
+      <div class="facts">
+        <div class="fact tbd" id="f-date"><small>When</small><span>Date coming soon</span></div>
+        <div class="fact tbd" id="f-venue"><small>Where</small><span>Venue coming soon</span></div>
+      </div>
+      <div class="calbox" id="cal" hidden>
+        <div class="lbl">Add to calendar</div>
+        <a class="btn secondary" id="cal-google" target="_blank" rel="noopener">Google Calendar</a>
+        <a class="btn secondary" id="cal-ics" href="#">Download .ics (Apple / Outlook)</a>
+      </div>
+      <p class="sub">Time and venue are still being finalized. Tell us you&rsquo;re interested below so we can send you the invitation the moment it&rsquo;s official.</p>
     </div>
-    <div id="cal" hidden style="margin-top:16px">
-      <div class="sans" style="font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:8px">Add to calendar</div>
-      <a class="btn secondary" id="cal-google" target="_blank" rel="noopener">Google Calendar</a>
-      <a class="btn secondary" id="cal-ics" href="#" style="margin-left:6px">Download .ics (Apple / Outlook)</a>
-    </div>
-    <p class="sub" style="margin-top:14px">Time and venue are still being finalized. Tell us you&rsquo;re interested below so we can send you the invitation the moment it&rsquo;s official.</p>
   </section>
 
-  <section class="card" id="rsvp-card">
-    <div id="form-head">
-      <h2>RSVP / I&rsquo;m interested</h2>
-      <p class="sub">Not a commitment yet &mdash; this helps us plan and reach everyone.</p>
+  <section class="about">
+    <div class="wrap narrow center">
+      <div class="kicker">Twenty years later</div>
+      <h2>Once a Guardian&hellip;</h2>
+      <div class="divider"></div>
+      <p class="sub" style="font-size:1.08rem">From Grove Street to everywhere else. Whether you stayed in Worcester or ended up across the country, come catch up with the classmates, teachers and stories that made SPM home.</p>
+      <div class="stats">
+        <div><b>181</b><span>Graduates</span></div>
+        <div><b>2006</b><span>Class year</span></div>
+        <div><b>20</b><span>Years</span></div>
+      </div>
+      <p class="sub" style="font-size:.85rem;margin-top:14px">Graduation, May 30, 2006 &middot; <a href="https://www.telegram.com/story/news/local/east-valley/2006/05/31/power-potential/53092693007/" target="_blank" rel="noopener">Telegram &amp; Gazette coverage</a></p>
     </div>
-    <form id="rsvp" novalidate onsubmit="return false">
-      <div class="row">
-        <div><label for="full_name">Full name</label><input id="full_name" name="full_name" required maxlength="200" autocomplete="name"></div>
-        <div><label for="maiden_name">Maiden / name at graduation <span class="opt">(if different)</span></label><input id="maiden_name" name="maiden_name" maxlength="200"></div>
+  </section>
+
+  <section style="background:var(--lav)">
+    <div class="wrap">
+      <div class="center">
+        <div class="kicker">Memory lane</div>
+        <h2>Home turf</h2>
+        <div class="divider"></div>
       </div>
-      <div class="row">
-        <div><label for="email">Email</label><input id="email" name="email" type="email" required maxlength="320" autocomplete="email"></div>
-        <div><label for="phone">Phone <span class="opt">(optional)</span></label><input id="phone" name="phone" type="tel" maxlength="50" autocomplete="tel"></div>
+      <div class="gallery">
+        <figure><img src="img/spm-grove.webp" alt="Saint Peter-Marian High School building on Grove Street, Worcester" loading="lazy" width="900" height="675"><figcaption>781 Grove Street</figcaption></figure>
+        <figure><img src="img/fitton-field.webp" alt="Fitton Field at Holy Cross" loading="lazy" width="900" height="600"><figcaption>Fitton Field &mdash; Thanksgiving football</figcaption></figure>
+        <figure><img src="img/mechanics-hall.webp" alt="Great Hall of Mechanics Hall, Worcester" loading="lazy" width="900" height="528"><figcaption>Mechanics Hall</figcaption></figure>
+        <figure><img src="img/worcester-skyline.webp" alt="Worcester skyline" loading="lazy" width="1100" height="427"><figcaption>Worcester today</figcaption></figure>
       </div>
-      <label id="att-l">Will you be there?</label>
-      <div class="choices" role="radiogroup" aria-labelledby="att-l">
-        <label><input type="radio" name="attending" value="yes"><span>Yes</span></label>
-        <label><input type="radio" name="attending" value="maybe"><span>Maybe</span></label>
-        <label><input type="radio" name="attending" value="no"><span>No</span></label>
+      <div class="photo-ask">Got yearbook, prom, sports or graduation photos from &rsquo;06? Mention them in your RSVP note below &mdash; we&rsquo;d love to build a class gallery.</div>
+    </div>
+  </section>
+
+  <section class="rsvp-sec">
+    <div class="wrap narrow">
+      <div class="card" id="rsvp-card">
+        <div id="form-head" class="center">
+          <div class="kicker">RSVP</div>
+          <h2>I&rsquo;m interested</h2>
+          <p class="sub">Not a commitment yet &mdash; this helps us plan and reach everyone.</p>
+        </div>
+        <form id="rsvp" novalidate onsubmit="return false">
+          <div class="row">
+            <div><label for="full_name">Full name</label><input id="full_name" name="full_name" required maxlength="200" autocomplete="name"></div>
+            <div><label for="maiden_name">Maiden / name at graduation <span class="opt">(if different)</span></label><input id="maiden_name" name="maiden_name" maxlength="200"></div>
+          </div>
+          <div class="row">
+            <div><label for="email">Email</label><input id="email" name="email" type="email" required maxlength="320" autocomplete="email"></div>
+            <div><label for="phone">Phone <span class="opt">(optional)</span></label><input id="phone" name="phone" type="tel" maxlength="50" autocomplete="tel"></div>
+          </div>
+          <label id="att-l">Will you be there?</label>
+          <div class="choices" role="radiogroup" aria-labelledby="att-l">
+            <label><input type="radio" name="attending" value="yes"><span>Yes</span></label>
+            <label><input type="radio" name="attending" value="maybe"><span>Maybe</span></label>
+            <label><input type="radio" name="attending" value="no"><span>No</span></label>
+          </div>
+          <div id="guests-wrap">
+            <label for="guests">Number of guests <span class="opt">(not including you)</span></label>
+            <select id="guests" name="guests"><option value="0">0 &ndash; just me</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+          </div>
+          <label for="address">Mailing address <span class="opt">(optional &ndash; for a printed invite)</span></label>
+          <textarea id="address" name="address" rows="2" maxlength="500" autocomplete="street-address" style="min-height:70px"></textarea>
+          <label for="note">Note or favorite SPM memory <span class="opt">(optional)</span></label>
+          <textarea id="note" name="note" maxlength="3000"></textarea>
+          <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="msg err" id="err" hidden></div>
+          <button class="submit" id="go" type="submit">Send my response</button>
+        </form>
+        <div class="thanks" id="thanks" hidden>
+          <h2>Thank you! &#127881;</h2>
+          <p id="thanks-msg"></p>
+          <p class="sub">Tell your classmates &mdash; share this page!</p>
+        </div>
       </div>
-      <div id="guests-wrap">
-        <label for="guests">Number of guests <span class="opt">(not including you)</span></label>
-        <select id="guests" name="guests"><option value="0">0 &ndash; just me</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
-      </div>
-      <label for="address">Mailing address <span class="opt">(optional &ndash; for a printed invite)</span></label>
-      <textarea id="address" name="address" rows="2" maxlength="500" autocomplete="street-address" style="min-height:64px"></textarea>
-      <label for="note">Note or favorite SPM memory <span class="opt">(optional)</span></label>
-      <textarea id="note" name="note" maxlength="3000"></textarea>
-      <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
-      <div class="msg err" id="err" hidden></div>
-      <button class="submit" id="go" type="submit">Send my response</button>
-    </form>
-    <div class="thanks" id="thanks" hidden>
-      <h2>Thank you! &#127881;</h2>
-      <p id="thanks-msg"></p>
-      <p class="sub">Once you&rsquo;re done here, tell your classmates &mdash; share this page!</p>
     </div>
   </section>
 </main>
+
 <footer>
-  <div>In memory of Saint Peter-Marian Central Catholic Jr./Sr. High School &middot; Worcester, MA &middot; Go Guardians!</div>
-  <div id="contact" style="margin-top:6px"></div>
-  <div style="margin-top:6px"><a href="admin.html" rel="nofollow">Committee</a></div>
+  <div class="mem">In memory of Saint Peter-Marian Central Catholic Jr./Sr. High School &middot; Go Guardians!</div>
+  <div>Worcester, Massachusetts &middot; 1921&ndash;2020</div>
+  <div id="contact" style="margin-top:8px"></div>
+  <div style="margin-top:10px"><a href="admin.html" rel="nofollow">Committee</a></div>
+  <div class="credits">
+    Photo credits (Wikimedia Commons): hero &amp; Grove Street building &mdash; &ldquo;Saint Peter-Marian High School, July 2016&rdquo; and &ldquo;Saint Peter-Marian High School, Worcester MA&rdquo; by John Phelan (Faolin42), <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> / <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> (resized, color-overlaid);
+    Fitton Field by Kenneth C. Zirkel, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>;
+    Mechanics Hall Great Hall by Kenneth C. Zirkel, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> (resized);
+    Worcester skyline by Anthonyt31201, CC0.
+    Guardians shield &copy; Saint Peter-Marian / its owners, shown here for this private alumni reunion page only.
+  </div>
 </footer>
 <script src="config.js"></script>
 <script src="app.js"></script>
